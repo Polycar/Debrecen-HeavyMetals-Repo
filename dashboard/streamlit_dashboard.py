@@ -935,16 +935,6 @@ def main():
 
         st.divider()
         
-        # Data Export
-        st.markdown("📥 **EXPORT DATA**")
-        csv = df_filtered.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Filtered CSV",
-            data=csv,
-            file_name=f"Debrecen_{metal_id}_Filtered.csv",
-            mime='text/csv',
-        )
-
         st.divider()
 
         # Info card
@@ -997,8 +987,8 @@ def main():
     """, unsafe_allow_html=True)
 
     # Tabs
-    tab_map, tab_profiles, tab_portfolio, tab_research, tab_data = st.tabs([
-        "🌍 Interactive Map", "🧬 Multi-Metal Profiles", "🖼️ Portfolio Gallery", "📊 Scientific Research", "📋 Data Explorer"
+    tab_map, tab_profiles, tab_portfolio, tab_research = st.tabs([
+        "🌍 Interactive Map", "🧬 Multi-Metal Profiles", "🖼️ Portfolio Gallery", "📊 Scientific Research"
     ])
 
     # ── TAB 1: FOLIUM MAP ──
@@ -1233,33 +1223,6 @@ def main():
         st.plotly_chart(fig_hist, use_container_width=True)
 
 
-    # ── TAB 5: DATA EXPLORER ──
-    with tab_data:
-        st.markdown("""
-        <div class='glass-card'>
-            <h3 style='margin-top:0; font-size:1rem;'>📋 Raw Data Explorer</h3>
-            <p style='color:#94a3b8; font-size:0.8rem; margin-bottom:0;'>
-                View and filter the XRF sampling data with spatial coordinates.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Summary statistics - ALWAYS on full dataset for scientific context
-        st.markdown("### Descriptive Statistics (Full Dataset, mg/kg)")
-        stats_df = df[list(METALS_INFO.keys())].describe().T
-        stats_df['threshold'] = [METALS_INFO[m]['limit'] for m in stats_df.index]
-        stats_df['exceed_%'] = [
-            (df[m] > METALS_INFO[m]['limit']).sum() / df[m].notna().sum() * 100
-            if df[m].notna().sum() > 0 else 0
-            for m in stats_df.index
-        ]
-        st.dataframe(stats_df.style.format("{:.2f}"), use_container_width=True)
-
-        # Raw data - use filtered
-        st.markdown(f"### Sample Data (Filtered: {len(df_filtered)} samples)")
-        display_cols = ['SampleID', 'lat', 'lng'] + list(METALS_INFO.keys())
-        available_cols = [c for c in display_cols if c in df.columns]
-        st.dataframe(df_filtered[available_cols], use_container_width=True, height=400)
 
 
 if __name__ == "__main__":
