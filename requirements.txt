@@ -1,6 +1,5 @@
 pandas
 numpy
-flask
 streamlit
 streamlit-folium
 folium
@@ -11,3 +10,5 @@ pyogrio
 shapely
 pyproj
 matplotlib
+altair<5
+flask
