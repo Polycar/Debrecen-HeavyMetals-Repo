@@ -1,0 +1,233 @@
+{
+    "bounds": [
+        [
+            47.42240088147775,
+            21.521714214537663
+        ],
+        [
+            47.68014152967608,
+            21.65793744440431
+        ]
+    ],
+    "metals": [
+        {
+            "id": "As",
+            "name": "Arsenic",
+            "limit": 15
+        },
+        {
+            "id": "Cd",
+            "name": "Cadmium",
+            "limit": 1
+        },
+        {
+            "id": "Cr",
+            "name": "Chromium",
+            "limit": 75
+        },
+        {
+            "id": "Cu",
+            "name": "Copper",
+            "limit": 75
+        },
+        {
+            "id": "Ni",
+            "name": "Nickel",
+            "limit": 40
+        },
+        {
+            "id": "Pb",
+            "name": "Lead",
+            "limit": 100
+        },
+        {
+            "id": "Zn",
+            "name": "Zinc",
+            "limit": 200
+        }
+    ],
+    "layers": [
+        {
+            "metal": "As",
+            "name": "Arsenic",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        },
+        {
+            "metal": "Cd",
+            "name": "Cadmium",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        },
+        {
+            "metal": "Cr",
+            "name": "Chromium",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        },
+        {
+            "metal": "Cu",
+            "name": "Copper",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        },
+        {
+            "metal": "Ni",
+            "name": "Nickel",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        },
+        {
+            "metal": "Pb",
+            "name": "Lead",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        },
+        {
+            "metal": "Zn",
+            "name": "Zinc",
+            "types": [
+                {
+                    "id": "kriging",
+                    "label": "Ordinary Kriging",
+                    "suffix": "_Topo.png"
+                },
+                {
+                    "id": "probability",
+                    "label": "Risk (Prob. Exceedance)",
+                    "suffix": "_Probability.png"
+                },
+                {
+                    "id": "uncertainty",
+                    "label": "Spatial Uncertainty",
+                    "suffix": "_Uncertainty.png"
+                },
+                {
+                    "id": "realization",
+                    "label": "Sample Realization",
+                    "suffix": "_Realization_1.png"
+                }
+            ]
+        }
+    ]
+}

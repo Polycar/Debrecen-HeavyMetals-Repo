@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debrecen Web GIS | Soil Contamination Platform</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --bg: #0f172a;
+            --glass: rgba(30, 41, 59, 0.85);
+            --text: #f8fafc;
+            --accent: #10b981;
+            --sidebar-width: 320px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: var(--sidebar-width);
+            background: #0f172a;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            margin: 0 0 1rem 0;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        .info-card {
+            background: var(--glass);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        .info-card p {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        /* Map Container */
+        #map {
+            flex-grow: 1;
+            background: #0b0f19;
+        }
+
+        /* Custom Map Controls Positioning */
+        .leaflet-control-container .leaflet-top.leaflet-right {
+            top: 20px;
+            right: 20px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .legend {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <aside>
+        <h1>Web GIS Platform</h1>
+
+        <div class="control-group">
+            <label for="metal-select">Heavy Metal Element</label>
+            <select id="metal-select" onchange="updateLayers()">
+                <!-- Options populated via JS -->
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="layer-select">Analysis View</label>
+            <select id="layer-select" onchange="updateLayers()">
+                <option value="kriging">Ordinary Kriging (Baseline)</option>
+                <option value="probability">Risk (Prob. Exceedance)</option>
+                <option value="uncertainty">Spatial Uncertainty (StdDev)</option>
+                <option value="realization">Sample Realization (Stochastic)</option>
+            </select>
+        </div>
+
+        <div id="meta-container">
+            <!-- Dynamic Metadata -->
+        </div>
+
+        <div class="info-card">
+            <h3>Dissemination Goal</h3>
+            <p>This platform provides decision-makers with interactive spatial evidence of soil contamination. Use the
+                toggles to identify high-risk zones and evaluate model uncertainty.</p>
+            <div class="tag">Objective 6: Stakeholder Web GIS</div>
+        </div>
+    </aside>
+
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let map;
+        let config;
+        let imageOverlay = null;
+
+        async function init() {
+            // Load configuration
+            try {
+                const response = await fetch('layers_config.json');
+                config = await response.json();
+            } catch (e) {
+                console.error("Failed to load layers_config.json. Make sure create_web_gis.py was run.", e);
+                return;
+            }
+
+            // Initialize Map
+            map = L.map('map', {
+                zoomControl: false
+            }).setView([47.53, 21.62], 12);
+
+            // Add Dark Mode Tiles
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            // Populate Metal Select
+            const select = document.getElementById('metal-select');
+            config.metals.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.id;
+                opt.textContent = `${m.name} (${m.id})`;
+                select.appendChild(opt);
+            });
+
+            // Set initial view to bounds
+            if (config.bounds) {
+                map.fitBounds(config.bounds);
+            }
+
+            updateLayers();
+        }
+
+        function updateLayers() {
+            const metalId = document.getElementById('metal-select').value;
+            const viewType = document.getElementById('layer-select').value;
+
+            const metalMeta = config.metals.find(m => m.id === metalId);
+            const layerGroup = config.layers.find(l => l.metal === metalId);
+            const typeMeta = layerGroup.types.find(t => t.id === viewType);
+
+            // Update Metadata UI
+            const metaContainer = document.getElementById('meta-container');
+            let metaHtml = `
+                <div style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                    <div style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        <strong>Target:</strong> ${metalMeta.name}
+                    </div>
+                    <div style="font-size: 0.8rem; color: #94a3b8;">
+                        Regulatory Threshold: <span style="color: #ef4444; font-weight: 600;">${metalMeta.limit} ppm</span>
+                    </div>
+                </div>
+            `;
+            metaContainer.innerHTML = metaHtml;
+
+            // Update Image Overlay
+            if (imageOverlay) {
+                map.removeLayer(imageOverlay);
+            }
+
+
+            // Construct the correct filename based on actual asset naming
+            let fileName;
+            if (viewType === 'kriging') {
+                // Kriging files: Arsenic_As_Topo.png format
+                fileName = `${metalMeta.name}_${metalId}_Topo.png`;
+            } else {
+                // Other files: As_Probability.png, As_Uncertainty.png, As_Realization_1.png
+                fileName = `${metalId}${typeMeta.suffix}`;
+            }
+
+            const imageUrl = `assets/${fileName}`;
+            console.log('Loading image:', imageUrl); // Debug logging
+
+            imageOverlay = L.imageOverlay(imageUrl, config.bounds, {
+                opacity: 0.7,
+                interactive: true,
+                errorOverlayUrl: '' // Prevent default error tile
+            });
+
+            imageOverlay.on('error', function () {
+                console.error('Failed to load image:', imageUrl);
+            });
+
+            imageOverlay.addTo(map);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+
+</html>
