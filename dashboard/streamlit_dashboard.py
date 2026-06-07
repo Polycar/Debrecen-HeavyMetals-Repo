@@ -564,7 +564,8 @@ def create_bar_comparison(df):
 
 # ──────────────────────────── FOLIUM MAP ────────────────────────────
 def create_folium_map(df, config, metal_id, layer_type, show_points, opacity,
-                      show_districts=False, districts_gdf=None, cumulative_risk=False):
+                      show_districts=False, districts_gdf=None, cumulative_risk=False,
+                      interactive_districts=True):
     """Build an interactive Folium map with raster overlay and optional sample points."""
     bounds = config["bounds"]
     center_lat = (bounds[0][0] + bounds[1][0]) / 2
@@ -707,12 +708,12 @@ def create_folium_map(df, config, metal_id, layer_type, show_points, opacity,
 
             folium.CircleMarker(
                 location=[row['lat'], row['lng']],
-                radius=4,
+                radius=6,
                 color=pt_color,
                 fill=True,
                 fill_color=pt_color,
                 fill_opacity=0.8,
-                weight=1,
+                weight=1.5,
                 popup=folium.Popup(popup_text, max_width=250),
             ).add_to(fg)
         sample_points_fg = fg
@@ -832,12 +833,16 @@ def create_folium_map(df, config, metal_id, layer_type, show_points, opacity,
                 highlight_function=lambda x: {
                     'weight': 3,
                     'fillOpacity': 0.2,
+                } if interactive_districts else lambda x: {
+                    'weight': 1.5,
+                    'fillOpacity': 0.08,
                 },
                 tooltip=folium.Tooltip(
                     f"<b>{name}</b><br><i>{tipus.replace('_', ' ').title()}</i><br><small>Click for details</small>",
                     style='font-family:Inter,sans-serif; font-size:12px;'
-                ),
-                popup=folium.Popup(popup_html, max_width=450),
+                ) if interactive_districts else None,
+                popup=folium.Popup(popup_html, max_width=450) if interactive_districts else None,
+                interactive=interactive_districts,
             )
             geojson.add_to(fg_districts)
 
@@ -928,6 +933,8 @@ def main():
         
         show_points = st.checkbox("📍 Show Sample Points", value=True)
         show_districts = st.checkbox("🏘️ Show District Names", value=True)
+        interactive_districts = st.checkbox("🖱️ Clickable District Info", value=True,
+                                             help="Uncheck this to easily click on individual sample points without district popups blocking them")
         
         st.divider()
         st.markdown("🩺 **RISK SETTINGS**")
@@ -998,7 +1005,7 @@ def main():
 
         with col_map:
             folium_map = create_folium_map(df_filtered, config, metal_id, layer_type, show_points, opacity, 
-                                          show_districts, districts_gdf, cumulative_risk)
+                                          show_districts, districts_gdf, cumulative_risk, interactive_districts)
             st_folium(folium_map, width=None, height=600, returned_objects=[])
 
         with col_legend:
