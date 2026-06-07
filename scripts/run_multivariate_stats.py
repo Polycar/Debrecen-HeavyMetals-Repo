@@ -11,7 +11,8 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 # Configuration
 CSV_FILE = os.path.join(PROJECT_ROOT, 'data', 'XRF_commonSpatial_Median.csv')
 OUTPUT_DIR = r"d:\Debrecen-város(1)\StatisticalAnalysis"
-METALS = ['Medián_As', 'Medián_Pb', 'Medián_Zn', 'Medián_Cu', 'Medián_Ni', 'Medián_Cr', 'Medián_Cd', 'Medián_Co', 'Medián_Fe', 'Medián_K', 'Medián_Mn', 'Medián_Ti', 'Medián_V']
+METALS = ['Medián_As', 'Medián_Cd', 'Medián_Cr', 'Medián_Cu', 'Medián_Ni', 'Medián_Pb', 'Medián_Zn']
+
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)

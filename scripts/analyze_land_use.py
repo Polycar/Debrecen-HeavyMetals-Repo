@@ -12,10 +12,10 @@ GDB_FILE = r"d:\Debrecen-város(1)\Debrecen-város\DebrecenVáros\XRF_geostati.g
 LAYER_NAME = "Toco_pontok_minden_urbanatlas"
 OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'results', 'LandUseAnalysis')
 METALS = [
-    'Medián_As', 'Medián_Ca', 'Medián_Cd', 'Medián_Co', 'Medián_Cr', 
-    'Medián_Cu', 'Medián_Fe', 'Medián_K', 'Medián_Mn', 'Medián_Mo', 
-    'Medián_Ni', 'Medián_Pb', 'Medián_Ti', 'Medián_V', 'Medián_Zn'
+    'Medián_As', 'Medián_Cd', 'Medián_Cr', 
+    'Medián_Cu', 'Medián_Ni', 'Medián_Pb', 'Medián_Zn'
 ]
+
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)

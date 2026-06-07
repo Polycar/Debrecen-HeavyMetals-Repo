@@ -10,10 +10,10 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 CSV_FILE = os.path.join(PROJECT_ROOT, 'data', 'XRF_commonSpatial_Median.csv')
 OUTPUT_DIR = r"d:\Debrecen-város(1)\HotspotAnalysis"
 METALS = [
-    'Medián_As', 'Medián_Ca', 'Medián_Cd', 'Medián_Co', 'Medián_Cr', 
-    'Medián_Cu', 'Medián_Fe', 'Medián_K', 'Medián_Mn', 'Medián_Mo', 
-    'Medián_Ni', 'Medián_Pb', 'Medián_Ti', 'Medián_V', 'Medián_Zn'
+    'Medián_As', 'Medián_Cd', 'Medián_Cr', 
+    'Medián_Cu', 'Medián_Ni', 'Medián_Pb', 'Medián_Zn'
 ]
+
 DISTANCE_THRESHOLD = 500  # 500 meters for local neighborhood
 
 if not os.path.exists(OUTPUT_DIR):

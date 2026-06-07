@@ -12,10 +12,10 @@ from thesis_workflow.core import ThesisWorkflow # Assuming logic is refactored h
 CSV_FILE = os.path.join(PROJECT_ROOT, 'data', 'XRF_commonSpatial_Median.csv')
 OUTPUT_DIR = r"d:\Debrecen-város(1)\Final_Thesis_Results"
 METALS = [
-    'Medián_As', 'Medián_Ca', 'Medián_Cd', 'Medián_Co', 'Medián_Cr', 
-    'Medián_Cu', 'Medián_Fe', 'Medián_K', 'Medián_Mn', 'Medián_Mo', 
-    'Medián_Ni', 'Medián_Pb', 'Medián_Ti', 'Medián_V', 'Medián_Zn'
+    'Medián_As', 'Medián_Cd', 'Medián_Cr', 
+    'Medián_Cu', 'Medián_Ni', 'Medián_Pb', 'Medián_Zn'
 ]
+
 
 def main():
     print("="*50)

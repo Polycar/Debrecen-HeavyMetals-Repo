@@ -47,12 +47,8 @@ METALS_INFO = {
     "Ni": {"name": "Nickel",    "limit": 40,   "color": "#06b6d4", "unit": "mg/kg"},
     "Pb": {"name": "Lead",      "limit": 100,  "color": "#8b5cf6", "unit": "mg/kg"},
     "Zn": {"name": "Zinc",      "limit": 200,  "color": "#ec4899", "unit": "mg/kg"},
-    # Secondary metals found in CSV
-    "Fe": {"name": "Iron",      "limit": 30000,"color": "#94a3b8", "unit": "mg/kg"},
-    "Mn": {"name": "Manganese", "limit": 1000, "color": "#64748b", "unit": "mg/kg"},
-    "Ti": {"name": "Titanium",  "limit": 5000, "color": "#475569", "unit": "mg/kg"},
-    "V":  {"name": "Vanadium",  "limit": 100,  "color": "#334155", "unit": "mg/kg"},
 }
+
 
 # Threshold Alert Levels (Hazard Quotient)
 HQ_LEVELS = {
