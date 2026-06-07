@@ -715,7 +715,9 @@ def create_folium_map(df, config, metal_id, layer_type, show_points, opacity,
                 weight=1,
                 popup=folium.Popup(popup_text, max_width=250),
             ).add_to(fg)
-        fg.add_to(m)
+        sample_points_fg = fg
+    else:
+        sample_points_fg = None
 
     m.fit_bounds(bounds)
 
@@ -858,6 +860,9 @@ def create_folium_map(df, config, metal_id, layer_type, show_points, opacity,
             ).add_to(fg_districts)
 
         fg_districts.add_to(m)
+
+    if show_points and sample_points_fg is not None:
+        sample_points_fg.add_to(m)
 
     # Layer control
     folium.LayerControl(collapsed=False).add_to(m)
